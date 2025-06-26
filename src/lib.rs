@@ -1,5 +1,8 @@
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
+use serde::Serialize;
+use wasm_bindgen::prelude::*;
+use serde_wasm_bindgen::Serializer;
 
 use geojson::{
     Feature, FeatureCollection, GeoJson, Geometry, LineStringType, PointType, PolygonType,
@@ -21,7 +24,8 @@ mod wrap;
 #[cfg(test)]
 mod tests;
 
-#[derive(Clone)]
+#[derive(Clone, Copy)]
+#[wasm_bindgen]
 pub struct TileOptions {
     pub tolerance: f64,     // simplification tolerance (higher means simpler)
     pub extent: u16,        // tile extent
@@ -41,6 +45,7 @@ impl Default for TileOptions {
 }
 
 #[derive(Clone)]
+#[wasm_bindgen]
 pub struct Options {
     pub max_zoom: u8,          // max zoom to preserve detail on; can't be higher than 24
     pub index_max_zoom: u8,    // max zoom in the tile index
@@ -142,11 +147,32 @@ pub fn geojson_to_tile(
     .tile
 }
 
+#[wasm_bindgen]
 pub struct GeoJSONVT {
     options: Options,
     stats: HashMap<u8, u32>,
     total: u32,
     tiles: HashMap<u64, InternalTile>,
+}
+
+// Public methods, exported to JavaScript.
+#[wasm_bindgen]
+impl GeoJSONVT {
+    pub fn from_jsobjects(
+        features: JsValue
+    ) -> Result<GeoJSONVT, JsValue> {
+        let geojson: GeoJson = serde_wasm_bindgen::from_value(features)
+            .map_err(|e| JsValue::from_str(&format!("Failed to parse GeoJSON: {}", e)))?;
+
+        Ok(GeoJSONVT::from_geojson(&geojson, &Options::default()))
+    }
+    pub fn get_tile_asjs(&mut self, z: u8, x: u32, y: u32) -> Result<JsValue, serde_wasm_bindgen::Error> {
+        let tile = self.get_tile(z, x, y).clone();
+        
+        let serializer = Serializer::json_compatible();
+        tile.features.serialize(&serializer)
+        
+    }
 }
 
 impl GeoJSONVT {
@@ -155,6 +181,7 @@ impl GeoJSONVT {
         Self::new(&collection, options)
     }
 
+    
     pub fn new(features_: &FeatureCollection, options: &Options) -> Self {
         let mut vt = Self {
             options: options.clone(),

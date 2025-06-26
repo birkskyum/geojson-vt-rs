@@ -4,6 +4,7 @@ use geojson::{
     PolygonType, Value,
 };
 use serde_json::Number;
+use serde::Serialize;
 
 use crate::types::*;
 use crate::{BBox, LinearRingType, MultiLineStringType, MultiPointType, MultiPolygonType};
@@ -18,7 +19,7 @@ pub static EMPTY_TILE: Tile = Tile {
     num_simplified: 0,
 };
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Serialize)]
 pub struct Tile {
     pub features: FeatureCollection,
     pub num_points: u32,

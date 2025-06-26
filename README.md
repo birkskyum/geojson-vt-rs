@@ -2,12 +2,12 @@
 
 Port to Rust of [C++ GeoJSON-VT](https://github.com/mapbox/geojson-vt-cpp) for slicing GeoJSON into vector tiles on the fly.
 
-A highly efficient Rust library for **slicing GeoJSON data into vector tiles on the fly**,  primarily designed to enable rendering and interacting with large geospatial datasets  on the browser side (without a server).
+A highly efficient Rust library for **slicing GeoJSON data into vector tiles on the fly**,  primarily designed to enable rendering and interacting with large geospatial datasets on the browser side (without a server).
 
-Created to power GeoJSON in [maplibre-rs](https://github.com/maplibre/maplibre-rs), but can be useful in other visualization platforms  like [Leaflet](https://github.com/Leaflet/Leaflet), [OpenLayers](https://openlayers.org/) and [d3](https://github.com/mbostock/d3),  as well as Node.js server applications.
+Created to power GeoJSON in [maplibre-rs](https://github.com/maplibre/maplibre-rs), but can be useful in other visualization platforms  like [Leaflet](https://github.com/Leaflet/Leaflet), [OpenLayers](https://openlayers.org/) and [d3](https://github.com/mbostock/d3), as well as Node.js server applications.
 
-Resulting tiles conform to the JSON equivalent  of the [vector tile specification](https://github.com/mapbox/vector-tile-spec/).
-To make data rendering and interaction fast, the tiles are simplified,  retaining the minimum level of detail appropriate for each zoom level (simplifying shapes, filtering out tiny polygons and polylines).
+Resulting tiles conform to the JSON equivalent of the [vector tile specification](https://github.com/mapbox/vector-tile-spec/).
+To make data rendering and interaction fast, the tiles are simplified, retaining the minimum level of detail appropriate for each zoom level (simplifying shapes, filtering out tiny polygons and polylines).
 
 Read more on how the library works [on the Mapbox blog](https://blog.mapbox.com/rendering-big-geodata-on-the-fly-with-geojson-vt-4e4d2a5dd1f2).
 
