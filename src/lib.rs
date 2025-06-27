@@ -166,12 +166,11 @@ impl GeoJSONVT {
 
         Ok(GeoJSONVT::from_geojson(&geojson, &Options::default()))
     }
-    pub fn get_tile_asjs(&mut self, z: u8, x: u32, y: u32) -> Result<JsValue, serde_wasm_bindgen::Error> {
+    pub fn getTile(&mut self, z: u8, x: u32, y: u32) -> Result<JsValue, serde_wasm_bindgen::Error> {
         let tile = self.get_tile(z, x, y).clone();
         
         let serializer = Serializer::json_compatible();
-        tile.features.serialize(&serializer)
-        
+        tile.serialize(&serializer)
     }
 }
 
