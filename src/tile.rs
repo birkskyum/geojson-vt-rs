@@ -1,9 +1,13 @@
 use geojson::feature::Id;
 use geojson::{
-    Feature, FeatureCollection, Geometry, JsonObject, JsonValue, LineStringType, PointType,
-    PolygonType, Value,
+    Feature, FeatureCollection, Geometry, JsonObject, LineStringType, PointType, PolygonType, Value,
 };
+
+#[cfg(feature = "line_metrics")]
+use geojson::JsonValue;
+#[cfg(feature = "line_metrics")]
 use serde_json::Number;
+
 use serde::Serialize;
 
 use crate::types::*;
@@ -176,6 +180,7 @@ impl InternalTile {
     ) {
         let new_line = self.transform_line_string(line);
         if !new_line.is_empty() {
+            #[cfg(feature = "line_metrics")]
             if self.line_metrics {
                 let mut new_props = props.unwrap_or_default();
                 let start = line.seg_start / line.dist;
@@ -204,7 +209,8 @@ impl InternalTile {
                     properties: Some(new_props),
                     foreign_members: None,
                 });
-            } else {
+            } #[cfg(not(feature = "line_metrics"))]
+            {
                 self.tile.features.features.push(Feature {
                     bbox: None,
                     geometry: Some(Geometry::new(Value::LineString(new_line.clone()))),

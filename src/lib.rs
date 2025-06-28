@@ -497,3 +497,7 @@ pub type MultiLineStringType = Vec<LineStringType>;
 pub type MultiPolygonType = Vec<PolygonType>;
 pub type GeometryCollectionType = Vec<Geometry>;
 pub type LinearRingType = Vec<PointType>;
+
+#[cfg(target_arch = "wasm32")]
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;

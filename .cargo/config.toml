@@ -1,0 +1,13 @@
+[unstable]
+# Rebuild a minimal standard library for the wasm target in release.
+# Requires nightly Rust; cargo invoked through `cargo +nightly …` or a default nightly toolchain.
+build-std = ["core", "alloc", "panic_abort", "std"]
+build-std-features = ["panic_immediate_abort"]
+
+[build]
+# Make sure cargo always targets wasm32 in this workspace when building release artefacts.
+target = "wasm32-unknown-unknown"
+
+[target.wasm32-unknown-unknown]
+# Some crates expect `has_std` to be set when `std` is available.
+rustflags = ["--cfg=has_std"] 
