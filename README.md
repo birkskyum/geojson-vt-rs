@@ -1,7 +1,7 @@
 # Commands for buildings
 
-- rustup run nightly wasm-pack build --target web --release
-- rustup run nightly wasm-pack pack
+- wasm-pack build --target web --release
+- wasm-pack pack
 
 
 
