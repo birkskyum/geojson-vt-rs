@@ -1,3 +1,10 @@
+# Commands for buildings
+
+- rustup run nightly wasm-pack build --target web --release
+- rustup run nightly wasm-pack pack
+
+
+
 ## geojson-vt-rs &mdash; GeoJSON Vector Tiles 
 
 Port to Rust of [C++ GeoJSON-VT](https://github.com/mapbox/geojson-vt-cpp) for slicing GeoJSON into vector tiles on the fly.
